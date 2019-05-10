@@ -139,6 +139,7 @@ public class SplashView extends View {
             float strokeWidth = mDistance - mCurrentHoleRadius;
             float radius = strokeWidth / 2 + mCurrentHoleRadius;
             mHolePaint.setStrokeWidth(strokeWidth);
+//            mHolePaint.setStyle(Paint.Style.FILL);
             canvas.drawCircle(mCenterX, mCenterY, radius, mHolePaint);
         } else {
             canvas.drawColor(mBackgroundColor);

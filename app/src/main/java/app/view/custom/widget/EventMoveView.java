@@ -73,6 +73,17 @@ public class EventMoveView extends View {
     }
 
     @Override
+    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+        // 首先我们要调用超类的onMeasure借口
+        // 原因是我们自己去实现一个方法获得长度、宽度太麻烦了
+        // 使用超类的的方法非常方便而且让复杂的细节可控
+        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+        // 在这里我们不能使用getWidth()和getHeight()。
+        // 因为这两个方法只能在View的布局完成后才能使用，而一个View的绘制过程是先绘制元素，再绘制Layout
+        // 所以我们必须使用getMeasuredWidth()和getMeasuredHeight()
+    }
+
+    @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
         Log.d(TAG, "------------------------->");
