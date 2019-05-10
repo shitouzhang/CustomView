@@ -6,6 +6,9 @@ import android.os.Bundle;
 import app.view.custom.R;
 import app.view.custom.widget.ExerciseView;
 
+/**
+ * 运动消耗
+ */
 public class ExerciseActivity extends AppCompatActivity {
 
     @Override

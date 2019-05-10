@@ -8,6 +8,9 @@ import android.widget.EditText;
 import app.view.custom.R;
 import app.view.custom.widget.GradientRampFluorescenceView;
 
+/**
+ * 渐变进度条
+ */
 public class GradientRampActivity extends AppCompatActivity {
 
     GradientRampFluorescenceView gv;

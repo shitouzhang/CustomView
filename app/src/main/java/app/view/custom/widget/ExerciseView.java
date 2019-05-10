@@ -1,16 +1,21 @@
 package app.view.custom.widget;
 
 import android.animation.ValueAnimator;
+import android.content.ComponentName;
+import android.content.ContentUris;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.RectF;
 import android.support.annotation.Nullable;
+import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
 import android.view.animation.LinearInterpolator;
+
+import app.view.custom.R;
 
 public class ExerciseView extends View {
 
@@ -20,7 +25,7 @@ public class ExerciseView extends View {
     private float mCenterY; //中心坐标Y轴
 
     private int radius = 300; //圆半径
-    private int ringWidth = 30; //圆环宽度
+    private int ringWidth = 45; //圆环宽度
 
     private float mBallX; // 小球中心坐标X轴
     private float mBallY; // 小球中心坐标Y轴
@@ -68,7 +73,8 @@ public class ExerciseView extends View {
 
         // 呃..先画个坐标系便于直观计算
         mPaint.setStrokeWidth(1);
-        mPaint.setARGB(20, 0, 0, 0); // 设置颜色和透明度
+        mPaint.setARGB(80, 0, 0, 0); // 设置颜色和透明度
+        canvas.drawLine(getWidth() / 5, 0, getWidth() / 5, getHeight(), mPaint);
         canvas.drawLine(getWidth() / 2, 0, getWidth() / 2, getHeight(), mPaint);
         canvas.drawLine(0, getHeight() / 2, getWidth(), getHeight() / 2, mPaint);
 
@@ -84,6 +90,7 @@ public class ExerciseView extends View {
     private void drawInCircle(Canvas canvas) {
         // 绘制半透明内圆   
         mPaint.setARGB(50, 54, 174, 255);
+//        mPaint.setColor(ContextCompat.getColor(this, R.color.blue));
         mPaint.setStyle(Paint.Style.STROKE); // 描边效果
         mPaint.setStrokeWidth(ringWidth);    // 描边宽度
         canvas.drawCircle(mCenterX, mCenterY, radius, mPaint);
@@ -104,18 +111,21 @@ public class ExerciseView extends View {
      */
     private void drawLocus(Canvas canvas) {
         // 呃..先画个矩形系便于画出外围圆弧
-        mPaint.setStrokeWidth(1);
-        mPaint.setARGB(20, 0, 0, 0);
+        mPaint.setStrokeWidth(1f);
+        mPaint.setARGB(50, 0, 0, 0);
         mPaint.setStyle(Paint.Style.STROKE);
         // top = (屏幕的宽 / 2） - 内圆半径 - 内圆的描边宽度
         canvas.drawRect(mCenterX - radius - ringWidth / 2, mCenterY - radius - ringWidth / 2, mCenterX + radius + ringWidth / 2, mCenterY + radius + ringWidth / 2, mPaint);
 
         // 设置内圆外弧形的矩形 (弧线的形成依赖于该矩形)
-        RectF rectF = new RectF(mCenterX - radius, mCenterY - radius, mCenterX + radius, mCenterY + radius);
+//        RectF rectF = new RectF(mCenterX - radius, mCenterY - radius, mCenterX + radius, mCenterY + radius);
+        RectF rectF = new RectF(mCenterX - radius, mCenterY - radius,
+                mCenterX + radius, mCenterY + radius);
         // 绘制内圆外的弧形
         mPaint.setStrokeWidth(ringWidth);
         mPaint.setStrokeCap(Paint.Cap.ROUND); //圆角效果
         mPaint.setARGB(250, 54, 174, 255);
+        //startAngle-开始角度
         canvas.drawArc(rectF, 270, sweepAngle, false, mPaint);
     }
 
@@ -130,36 +140,40 @@ public class ExerciseView extends View {
 //      mPaint.setFakeBoldText(true); //设置是否为粗体文字
         // 获取标题值的宽度
         mPaint.setTextSize(70);
+        //计算绘制字体的区域并保存Rect中
         mPaint.getTextBounds(mTitleValue, 0, mTitleValue.length(), kCalValueRect);
         canvas.drawText(mTitleValue, mCenterX - kCalValueRect.width() / 2, mCenterY - radius / 3, mPaint);
         // 获取千卡值的宽度
         mPaint.setTextSize(120);
         mPaint.getTextBounds(String.valueOf(kCalValue), 0, String.valueOf(kCalValue).length(), kCalValueRect);
+//        canvas.drawText(String.valueOf(kCalValue), mCenterX - kCalValueRect.width() / 2, mCenterY + radius / 4, mPaint);
         canvas.drawText(String.valueOf(kCalValue), mCenterX - kCalValueRect.width() / 2, mCenterY + radius / 4, mPaint);
         // 获取单位值的宽度
         mPaint.setTextSize(50);
         mPaint.getTextBounds(mUnitValue, 0, mUnitValue.length(), kCalValueRect);
-        canvas.drawText(mUnitValue, mCenterX - kCalValueRect.width() / 2, mCenterY + radius / 2, mPaint);
+//        canvas.drawText(mUnitValue, mCenterX + kCalValueRect.width() / 2 + kCalValueRect.width() / 2, mCenterY + radius / 2, mPaint);
+        canvas.drawText(mUnitValue, mCenterX, mCenterY + radius / 2, mPaint);
     }
 
     private void startAnimator() {
-        mAnimator = ValueAnimator.ofFloat(0, (float) (Math.PI * 2));
-        mAnimator.setRepeatCount(1);
-        mAnimator.setDuration(3000);
+//        mAnimator = ValueAnimator.ofFloat(0, (float) (Math.PI * 2));
+        mAnimator = ValueAnimator.ofFloat(0, 1000);
+        mAnimator.setRepeatCount(3);
+        mAnimator.setDuration(2000);
         mAnimator.setInterpolator(new LinearInterpolator());
         mAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override
             public void onAnimationUpdate(ValueAnimator animation) {
-
                 if (sweepAngle == 0 || sweepAngle <= 180) {
                     sweepAngle++;
                     // 改变kcal的值  100 = 360°
                     float value = (float) (sweepAngle / 3.6);
-                    kCalValue = (int) Math.ceil(value);
+                    kCalValue = (int) Math.ceil(value);//向上取整
                     // 改变小球的位置 圆点坐标(X) + 半径radius * cos(起始angle270 * );
                     mBallX = (float) (Math.cos((sweepAngle + 270) * Math.PI / 180) * radius + mCenterX);
                     mBallY = (float) (Math.sin((sweepAngle + 270) * Math.PI / 180) * radius + mCenterY);
                     invalidate();
+//                    postInvalidate();
                 }
             }
         });

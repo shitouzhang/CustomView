@@ -4,8 +4,10 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.nfc.Tag;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Toast;
@@ -14,6 +16,8 @@ import android.widget.Toast;
  * 手指在移动范围时小球跟着手指移动
  */
 public class EventMoveView extends View {
+
+    private static final String TAG = "EventMoveView";
 
     private Paint mAreaPaint;  // 移动区域画笔
     private Paint mBallPaint;  // 小球画笔
@@ -44,9 +48,9 @@ public class EventMoveView extends View {
     private void init() {
 
         mAreaPaint = new Paint();
-        mAreaPaint.setColor(Color.BLACK);
+        mAreaPaint.setColor(Color.RED);
         mAreaPaint.setAntiAlias(true); // 抗锯齿
-        mAreaPaint.setStrokeWidth(4);  // 设置线条宽度
+        mAreaPaint.setStrokeWidth(10);  // 设置线条宽度
         mAreaPaint.setStyle(Paint.Style.STROKE); // 描边效果
 
         mBallPaint = new Paint();
@@ -71,7 +75,7 @@ public class EventMoveView extends View {
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-
+        Log.d(TAG, "------------------------->");
         // 画可移动的区域-大圆
         canvas.drawCircle(mCenterX, mCenterY, mAreaRadius, mAreaPaint);
 

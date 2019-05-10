@@ -106,6 +106,7 @@ public class GradientRampFluorescenceView extends View {
         mPaint.setColor(Color.WHITE);
         mPaint.setStrokeWidth(7f);    // 描边宽度
         canvas.drawLine(startX, startY, endX, endY, mPaint);
+        canvas.drawLine(startX, startY + 100, endX, endY + 100, mPaint);
 
         // 画渐变进度条
         mPaint.setStrokeWidth(10f);    // 描边宽度
@@ -189,7 +190,7 @@ public class GradientRampFluorescenceView extends View {
      * 检查平均长度是否正常
      */
     private float checkAverageLength() {
-        if (averageLength == 0f) {
+        if (averageLength == 0f) { //平均长度
             averageLength = maxLength / maxProgress; //不可为0
         }
         return averageLength;
@@ -212,6 +213,7 @@ public class GradientRampFluorescenceView extends View {
     public boolean onTouchEvent(MotionEvent event) {
         switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN:
+                //当前手指点击的坐标距离进度球圆心的距离////Math.hypot()函数返回它的所有参数的平方和的平方根
                 mDist = (float) Math.hypot(event.getX() - progessX, event.getY() - progessY);
                 if (mDist < (progessBollRadius + MOVE_OFFSET)) {
                     mHandler.removeMessages(MESSAGE_START_PROGRESS);

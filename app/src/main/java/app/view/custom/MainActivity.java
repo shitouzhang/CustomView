@@ -10,7 +10,6 @@ import app.view.custom.demo.ExerciseActivity;
 import app.view.custom.demo.GradientRampActivity;
 import app.view.custom.demo.SplashActivity;
 import app.view.custom.demo.SplitActivity;
-import app.view.custom.widget.GradientRampFluorescenceView;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -26,7 +25,7 @@ public class MainActivity extends AppCompatActivity {
         findViewById(R.id.btnSplash).setOnClickListener(v -> startActivity(new Intent(this, SplashActivity.class)));
 
         findViewById(R.id.btnSplit).setOnClickListener(v -> startActivity(new Intent(this, SplitActivity.class)));
-
+//运动消耗
         findViewById(R.id.btnExercise).setOnClickListener(v -> startActivity(new Intent(this, ExerciseActivity.class)));
 
         findViewById(R.id.btnGradient).setOnClickListener(v -> startActivity(new Intent(this, GradientRampActivity.class)));

@@ -25,7 +25,7 @@ public class SplashView extends View {
 
     //背景色
     private int mBackgroundColor = Color.WHITE;
-    private int[] mCircleColors;
+    private int[] mCircleColors;//小球的颜色
 
     //表示旋转圆的中心坐标
     private float mCenterX;
@@ -55,7 +55,6 @@ public class SplashView extends View {
     }
 
     private void init(Context context) {
-
         mPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
 
         mHolePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
@@ -75,17 +74,16 @@ public class SplashView extends View {
         super.onSizeChanged(w, h, oldw, oldh);
         mCenterX = w * 1f / 2;
         mCenterY = h * 1f / 2;
+        //表示斜对角线长度的一半,扩散圆最大半径
         mDistance = (float) (Math.hypot(w, h) / 2);
     }
 
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-
         if (mState == null) {
             mState = new RotateState();
         }
-
         mState.drawState(canvas);
     }
 
@@ -107,6 +105,7 @@ public class SplashView extends View {
             mValueAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
                 @Override
                 public void onAnimationUpdate(ValueAnimator animation) {
+                    //当前大圆的旋转角度
                     mCurrentRotateAngle = (float) animation.getAnimatedValue();
                     invalidate();
                 }

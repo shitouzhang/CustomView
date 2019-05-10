@@ -11,6 +11,9 @@ import android.util.AttributeSet;
 import android.view.View;
 import android.view.animation.LinearInterpolator;
 
+/**
+ * 旋转圆弧线
+ */
 public class ArcWhirlView extends View {
 
     private Paint mPaint;
@@ -49,7 +52,7 @@ public class ArcWhirlView extends View {
 
         // 呃..先画个坐标系便于直观计算
         mPaint.setStrokeWidth(1);
-        mPaint.setARGB(20, 0, 0, 0); // 设置颜色和透明度
+        mPaint.setARGB(50, 0, 0, 0); // 设置颜色和透明度
         canvas.drawLine(getWidth() / 2, 0, getWidth() / 2, getHeight(), mPaint);
         canvas.drawLine(0, getHeight() / 2, getWidth(), getHeight() / 2, mPaint);
 
@@ -65,14 +68,30 @@ public class ArcWhirlView extends View {
 
         // 呃..再画个矩形系便于画出外围圆弧
         mPaint.setStrokeWidth(1);
-        mPaint.setARGB(10, 0, 0, 0);
+        mPaint.setARGB(80, 0, 20, 0);
         mPaint.setStyle(Paint.Style.STROKE);
         // top = (屏幕的宽 / 2） - 内圆半径 - 内院的描边宽度 - 圆弧和内圆的距离
-        canvas.drawRect(mCenterX - radius - ringWidth - mDist, mCenterY - radius - ringWidth - mDist, mCenterX + radius + ringWidth + mDist, mCenterY + radius + ringWidth + mDist, mPaint);
+        canvas.drawRect(mCenterX - radius - ringWidth - mDist, mCenterY - radius - ringWidth - mDist,
+                mCenterX + radius + ringWidth + mDist, mCenterY + radius + ringWidth + mDist, mPaint);
 
         drawPeripheryArc(canvas);
 
+        drawCircleBig(canvas);
+
         openAnimator();
+    }
+
+
+    float peripheryAngleBig = 100;
+
+    private void drawCircleBig(Canvas canvas) {
+        canvas.drawRect(mCenterX - radius - 100, mCenterY - radius - 100,
+                mCenterX + radius + 100, mCenterY + radius + 100, mPaint);
+
+//        (弧线的形成依赖于该矩形)
+        RectF rectF = new RectF(mCenterX - radius - 100, mCenterY - radius - 100,
+                mCenterX + radius + 100, mCenterY + radius + 100);
+        canvas.drawArc(rectF, peripheryAngleBig, 80, false, mPaint);
     }
 
     /**
@@ -95,7 +114,8 @@ public class ArcWhirlView extends View {
         // 绘制和内圆重叠的弧形
         mPaint.setARGB(250, 54, 174, 255);
         mPaint.setStrokeCap(Paint.Cap.ROUND); //圆角效果
-        canvas.drawArc(rectF, overlapAngle, 90, false, mPaint);
+//        mPaint.setStyle(Paint.Style.FILL);
+        canvas.drawArc(rectF, overlapAngle, 90, true, mPaint);
         canvas.drawArc(rectF, overlapAngle + 180, 90, false, mPaint);
     }
 
@@ -130,8 +150,9 @@ public class ArcWhirlView extends View {
         mAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override
             public void onAnimationUpdate(ValueAnimator animation) {
-                overlapAngle += 0.1f;
-                peripheryAngle -= 0.1f;
+                overlapAngle += 0.1f;//和内圆重叠弧形的起始角度
+                peripheryAngle -= 0.1f;//外围弧形的起始角度
+                peripheryAngleBig -= 0.1f;
                 invalidate();
             }
         });
