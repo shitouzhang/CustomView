@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".demo.PulsingActivity">
+
+    <app.view.custom.widget.PulsingLayout
+        android:id="@+id/pulsingLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginStart="-8dp"
+            android:layout_marginTop="9dp"
+            android:layout_marginEnd="-8dp"
+            tools:srcCompat="@tools:sample/backgrounds/scenic" />
+
+    </app.view.custom.widget.PulsingLayout>
+
+
+</android.support.constraint.ConstraintLayout>
